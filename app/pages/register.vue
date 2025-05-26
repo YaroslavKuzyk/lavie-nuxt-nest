@@ -14,7 +14,7 @@
 
         <p class="text-zinc-500 mb-5">Create an account to get started</p>
 
-        <form class="w-1/3 space-y-3" @submit="onSubmit">
+        <form class="max-w-[330px] w-full space-y-3" @submit="onSubmit">
           <FormField v-slot="{ componentField }" name="email">
             <FormItem>
               <FormControl>
