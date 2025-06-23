@@ -10,26 +10,29 @@
           <Separator orientation="vertical" class="mr-2 h-4" />
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem class="hidden md:block">
-                <BreadcrumbLink href="#">
-                  Building Your Application
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator class="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-              </BreadcrumbItem>
+              <template v-for="(breadcrumb, index) in breadcrumbs" :key="index">
+                <BreadcrumbItem
+                  :class="{
+                    'pointer-events-none': index === breadcrumbs.length - 1,
+                  }"
+                >
+                  <BreadcrumbLink>
+                    <NuxtLink :to="breadcrumb.url" class="text-sm">
+                      {{ breadcrumb.label }}
+                    </NuxtLink>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator
+                  v-if="index !== breadcrumbs.length - 1"
+                  class="hidden md:block"
+                />
+              </template>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
       </header>
       <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-          <div class="aspect-video rounded-xl bg-muted/50" />
-          <div class="aspect-video rounded-xl bg-muted/50" />
-          <div class="aspect-video rounded-xl bg-muted/50" />
-        </div>
-        <div class="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+        <NuxtPage />
       </div>
     </SidebarInset>
   </SidebarProvider>
@@ -47,6 +50,12 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
+
+import { useAdminStore } from "@/stores/useAdminStore";
+
+const adminStore = useAdminStore();
+
+const breadcrumbs = computed(() => adminStore.breadcrumbs);
 </script>
 
 <style scoped></style>

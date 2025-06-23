@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Token } from '../../auth/entities/token.entity';
+import { File } from '../../files/entities/files.entity';
 
 @Entity('users')
 export class User {
@@ -17,4 +18,7 @@ export class User {
 
   @OneToMany(() => Token, (token) => token.user)
   tokens: Token[];
+
+  @OneToMany(() => File, (file) => file.user)
+  files: File[];
 }

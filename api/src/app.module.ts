@@ -3,6 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { FilesModule } from './files/files.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { ColorsModule } from './colors/colors.module';
 
 @Module({
   imports: [
@@ -17,8 +22,17 @@ import { UsersModule } from './users/users.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
     }),
+    MulterModule.register({
+      dest: './storage',
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'storage'),
+      serveRoot: '/storage',
+    }),
     AuthModule,
     UsersModule,
+    FilesModule,
+    ColorsModule,
   ],
 })
 export class AppModule {}

@@ -1,32 +1,29 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useCookie, navigateTo } from "#app";
-import { useHttp } from "~/composables/useHttp";
-import { type IAuthTokens, type IUser } from "@/types/auth";
+import { type IUser } from "@/types/auth";
+import { UserType } from "@/types/auth";
+import { useAuthApi } from "~/composables/repositories/useAuthApi";
 
 export const useAuthStore = defineStore("auth-store", () => {
   const accessToken = ref<string | null>(null);
   const isReady = ref(false);
   const cookieRefreshToken = useCookie("refreshToken", { sameSite: "strict" });
   const user = ref<IUser | null>(null);
-
-  const api = useHttp();
+  const isAuth = computed(() => !!accessToken.value);
+  const isAdmin = computed(() => user.value?.type === UserType.ADMIN);
+  const { useLogin, useRegister, useRefreshTokens, useFetchMe, useLogout } =
+    useAuthApi();
 
   async function login(dto: { email: string; password: string }) {
-    const { accessToken: a, refreshToken: r } = await api<IAuthTokens>(
-      "/auth/login",
-      { method: "POST", body: dto }
-    );
+    const { accessToken: a, refreshToken: r } = await useLogin(dto);
     accessToken.value = a;
     cookieRefreshToken.value = r;
     await fetchMe();
   }
 
   async function register(dto: { email: string; password: string }) {
-    const { accessToken: a, refreshToken: r } = await api<IAuthTokens>(
-      "/auth/register",
-      { method: "POST", body: dto }
-    );
+    const { accessToken: a, refreshToken: r } = await useRegister(dto);
     accessToken.value = a;
     cookieRefreshToken.value = r;
     await fetchMe();
@@ -35,9 +32,8 @@ export const useAuthStore = defineStore("auth-store", () => {
   async function refreshTokens() {
     if (!cookieRefreshToken.value) return false;
     try {
-      const { accessToken: a, refreshToken: r } = await api<IAuthTokens>(
-        "/auth/refresh",
-        { method: "POST", body: { refreshToken: cookieRefreshToken.value } }
+      const { accessToken: a, refreshToken: r } = await useRefreshTokens(
+        cookieRefreshToken.value
       );
       accessToken.value = a;
       cookieRefreshToken.value = r;
@@ -50,7 +46,7 @@ export const useAuthStore = defineStore("auth-store", () => {
 
   async function fetchMe() {
     try {
-      user.value = await api<IUser>("/auth/me", { method: "GET" });
+      user.value = await useFetchMe();
       return user.value;
     } catch {
       user.value = null;
@@ -58,7 +54,8 @@ export const useAuthStore = defineStore("auth-store", () => {
     }
   }
 
-  function logout() {
+  async function logout() {
+    await useLogout();
     cookieRefreshToken.value = null;
     accessToken.value = null;
     user.value = null;
@@ -85,5 +82,7 @@ export const useAuthStore = defineStore("auth-store", () => {
     fetchMe,
     initialize,
     logout,
+    isAuth,
+    isAdmin,
   };
 });

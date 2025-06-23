@@ -4,13 +4,13 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-05-15",
   ssr: true,
   devtools: { enabled: true },
-  modules: ["@pinia/nuxt", "shadcn-nuxt"],
+  modules: ["@pinia/nuxt", "shadcn-nuxt", "dayjs-nuxt", "dayjs-nuxt"],
   runtimeConfig: {
     public: {
       apiBase: "http://localhost:8000/api",
     },
   },
-  css: ["~/assets/css/tailwind.css"],
+  css: ["~/assets/css/tailwind.css", "~/assets/css/main.css"],
   vite: {
     plugins: [tailwindcss()],
   },

@@ -1,0 +1,124 @@
+{
+  "data": [
+    {
+        "id": 1,
+        "name": "Мереживний комплект Aruba L2112 / L2114 (без пояса)",
+        "price": 1000,
+        "discount": 100,
+        "category": "Мереживо",
+        "size": "S",
+        "rating": 4.5,
+        "quantity": 10,
+        "color": {
+            "name": "Червоний",
+            "value": "red"
+        },
+        "description": "Мереживний комплект Aruba L2112 / L2114 (без пояса)",
+        "parent_group_id": 1,
+        "images": [
+            {
+                "id": 1,
+                "url": "https://www.odin-originals.com.ua/wp-content/uploads/2022/10/photo_2022-10-25_10-27-32.jpg"
+            },
+            {
+                "id": 2,
+                "url": "https://images.prom.ua/4846238662_w640_h2048__komplekt_bilizni_mado_sm21871.jpg?fresh=1&PIMAGE_ID=4846238662"
+            }
+        ],
+        "created_at": "2021-01-01",
+        "updated_at": "2021-01-01"
+
+    },
+    {
+        "id": 2,
+        "name": "Мереживний комплект Aruba L2112 / L2114 (без пояса) 2",
+        "price": 1000,
+        "discount": null,
+        "category": "Мереживо",
+        "size": "S",
+        "rating": 4.5,
+        "quantity": 10,
+        "color": {
+            "name": "Червоний",
+            "value": "red"
+        },
+        "description": "Мереживний комплект Aruba L2112 / L2114 (без пояса)",
+        "parent_group_id": 1,
+        "images": [
+            {
+                "id": 1,
+                "url": "https://images.prom.ua/4846238662_w640_h2048__komplekt_bilizni_mado_sm21871.jpg?fresh=1&PIMAGE_ID=4846238662"
+            },
+            {
+                "id": 2,
+                "url": "https://www.odin-originals.com.ua/wp-content/uploads/2022/10/photo_2022-10-25_10-27-32.jpg"
+            }
+        ],
+        "created_at": "2021-01-01",
+        "updated_at": "2021-01-01"
+    },
+    {
+        "id": 3,
+        "name": "Мереживний комплект Aruba L2112 / L2114 (без пояса) 3",
+        "price": 1000,
+        "discount": null,
+        "category": "Мереживо",
+        "size": "S",
+        "rating": 4.5,
+        "quantity": 10,
+        "color": {
+            "name": "Червоний",
+            "value": "red"
+        },
+        "description": "Мереживний комплект Aruba L2112 / L2114 (без пояса)",
+        "parent_group_id": 1,
+        "images": [
+            {
+                "id": 1,
+                "url": "https://images.prom.ua/4846238662_w640_h2048__komplekt_bilizni_mado_sm21871.jpg?fresh=1&PIMAGE_ID=4846238662"
+            },
+            {
+                "id": 2,
+                "url": "https://www.odin-originals.com.ua/wp-content/uploads/2022/10/photo_2022-10-25_10-27-32.jpg"
+            }
+        ],
+        "created_at": "2021-01-01",
+        "updated_at": "2021-01-01"
+
+    },
+    {
+        "id": 4,
+        "name": "Мереживний комплект Aruba L2112 / L2114 (без пояса) 4",
+        "price": 1000,
+        "discount": null,
+        "category": "Мереживо",
+        "size": "S",
+        "rating": 4.5,
+        "quantity": 10,
+        "color": {
+            "name": "Червоний",
+            "value": "red"
+        },
+        "description": "Мереживний комплект Aruba L2112 / L2114 (без пояса)",
+        "parent_group_id": 1,
+        "images": [
+            {
+                "id": 1,
+                "url": "https://www.odin-originals.com.ua/wp-content/uploads/2022/10/photo_2022-10-25_10-27-32.jpg"
+            },
+            {
+                "id": 2,
+                "url": "https://images.prom.ua/4846238662_w640_h2048__komplekt_bilizni_mado_sm21871.jpg?fresh=1&PIMAGE_ID=4846238662"
+            }
+        ],
+        "created_at": "2021-01-01",
+        "updated_at": "2021-01-01"
+    }
+  ],
+  "meta": {
+    "total": 2,
+    "page": 1,
+    "limit": 10,
+    "total_pages": 1
+  }
+}
