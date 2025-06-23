@@ -44,12 +44,16 @@
           url: img.path,
         }"
         :key="img.id"
+        :type="props.type"
+        :disabledCheck="isMaxChecked && !selectedImages.includes(img)"
         @onDelete="handleDelete(img.id)"
+        @onCheck="handleCheck(img)"
+        @onUncheck="handleUncheck(img)"
       />
     </div>
 
     <Pagination
-      class="w-full"
+      class="w-full mt-4"
       :total="galleryStore.galleryImagesMeta.meta.total"
       :page="galleryStore.galleryParams.page"
       :perPage="galleryStore.galleryParams.perPage"
@@ -64,8 +68,25 @@ import { useGalleryStore } from "~/stores/useGalleryStore";
 import ImgThumb from "~/components/common/ImgControls/ImgThumb.vue";
 import { X } from "lucide-vue-next";
 import Pagination from "~/components/common/Pagination.vue";
+import { useAsyncData } from "nuxt/app";
+import { computed, onMounted, ref, watch } from "vue";
+import { type IGalleryImage } from "~/types/gallery";
+
+interface IProps {
+  type: "default" | "picker";
+  maxChecked?: number;
+}
+
+interface IEmit {
+  (e: "onSelected", images: IGalleryImage[]): void;
+}
+
+const emit = defineEmits<IEmit>();
+
+const props = defineProps<IProps>();
 
 const galleryStore = useGalleryStore();
+const selectedImages = ref<IGalleryImage[]>([]);
 
 const handleFiles = (files: File[]) => {
   files.forEach(async (file) => {
@@ -73,9 +94,33 @@ const handleFiles = (files: File[]) => {
   });
 };
 
+const isMaxChecked = computed(() => {
+  return selectedImages.value.length >= props.maxChecked;
+});
+
+const handleCheck = (img: IGalleryImage) => {
+  selectedImages.value.push(img);
+};
+
+const handleUncheck = (img: IGalleryImage) => {
+  selectedImages.value = selectedImages.value.filter((i) => i.id !== img.id);
+};
+
+watch(
+  () => selectedImages.value,
+  (newVal) => {
+    emit("onSelected", newVal);
+  },
+  { deep: true }
+);
+
 const handleDelete = async (id: number) => {
   await galleryStore.deleteImage(id);
 };
+
+const { data: galleryImages } = useAsyncData("galleryImages", () => {
+  return galleryStore.fetchGalleryImages();
+});
 
 watch(
   () => [

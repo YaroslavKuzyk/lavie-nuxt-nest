@@ -8,6 +8,8 @@ import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ColorsModule } from './colors/colors.module';
+import { SizesModule } from './sizes/sizes.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { ColorsModule } from './colors/colors.module';
     UsersModule,
     FilesModule,
     ColorsModule,
+    SizesModule,
+    CategoriesModule,
   ],
 })
 export class AppModule {}

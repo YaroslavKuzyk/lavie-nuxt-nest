@@ -1,21 +1,21 @@
 <template>
   <Card>
     <CardHeader>
-      <CardTitle>Кольори</CardTitle>
+      <CardTitle>Категорії</CardTitle>
       <div>
         <div class="flex gap-4 items-center justify-between mt-3">
           <div class="w-1/3">
             <Input v-model="search" type="text" placeholder="Пошук по назві" />
           </div>
           <div>
-            <CreateColorDrawer>
+            <CreateCategoryDrawer>
               <template #trigger>
                 <Button class="cursor-pointer">
                   <Plus />
-                  Додати колір
+                  Додати категорію
                 </Button>
               </template>
-            </CreateColorDrawer>
+            </CreateCategoryDrawer>
           </div>
         </div>
       </div>
@@ -26,35 +26,38 @@
           <TableRow>
             <TableHead>ID</TableHead>
             <TableHead>Назва</TableHead>
-            <TableHead>Значення</TableHead>
+            <TableHead>Картинка</TableHead>
             <TableHead>Створено</TableHead>
             <TableHead>Оновлено</TableHead>
             <TableHead class="text-right">Дії</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          <template v-if="colorsStore.colors.length">
-            <TableRow v-for="color in colorsStore.colors" :key="color.id">
-              <TableCell>{{ color.id }}</TableCell>
-              <TableCell>{{ color.name }}</TableCell>
-              <TableCell class="flex items-center gap-2">
-                <div
-                  class="w-6 h-6 rounded-full border border-gray-200"
-                  :style="{ backgroundColor: color.value }"
-                ></div>
-                <span class="text-sm">{{ color.value }}</span>
+          <template v-if="categoriesStore.categories.length">
+            <TableRow
+              v-for="category in categoriesStore.categories"
+              :key="category.id"
+            >
+              <TableCell>{{ category.id }}</TableCell>
+              <TableCell>{{ category.name }}</TableCell>
+              <TableCell>
+                <img
+                  :src="category.picture.path"
+                  alt="category-picture"
+                  class="w-10 h-10 object-cover"
+                />
               </TableCell>
               <TableCell>{{
-                $dayjs(color.createdAt).format("DD.MM.YYYY")
+                $dayjs(category.createdAt).format("DD.MM.YYYY")
               }}</TableCell>
               <TableCell>{{
-                $dayjs(color.updatedAt).format("DD.MM.YYYY")
+                $dayjs(category.updatedAt).format("DD.MM.YYYY")
               }}</TableCell>
               <TableCell class="text-right">
                 <Button
                   variant="ghost"
                   class="size-9 mr-2 cursor-pointer"
-                  @click="onEdit(color.id)"
+                  @click="onEdit(category.id)"
                 >
                   <Pencil />
                 </Button>
@@ -62,7 +65,7 @@
                 <Button
                   variant="ghost"
                   class="size-9 text-red-500 hover:text-red-500 cursor-pointer"
-                  @click="onDelete(color.id)"
+                  @click="onDelete(category.id)"
                 >
                   <Trash2 />
                 </Button>
@@ -80,7 +83,7 @@
       </Table>
     </CardContent>
 
-    <EditColorDrawer
+    <EditCategoryDrawer
       :is-open="isOpen"
       :id="id ?? 0"
       @update:is-open="isOpen = $event"
@@ -100,57 +103,50 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import CreateColorDrawer from "~/components/admin/colors/drawers/CreateColorDrawer.vue";
-import EditColorDrawer from "~/components/admin/colors/drawers/EditColorDrawer.vue";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Pencil, Plus, Trash2 } from "lucide-vue-next";
 import { useAdminStore } from "~/stores/useAdminStore";
-import { useColorsStore } from "~/stores/useColorsStore";
+import { useCategoriesStore } from "~/stores/useCategoriesStore";
+import CreateCategoryDrawer from "~/components/admin/categories/drawers/CreateCategoryDrawer.vue";
+import EditCategoryDrawer from "~/components/admin/categories/drawers/EditCategoryDrawer.vue";
 
 definePageMeta({
   layout: "admin",
   middleware: ["auth", "admin"],
 });
 
-const colorsStore = useColorsStore();
+const categoriesStore = useCategoriesStore();
 const adminStore = useAdminStore();
 const isOpen = ref(false);
 const id = ref<number | null>(null);
 const search = ref("");
 
-const { data: colors } = useAsyncData("colors", () => {
-  return colorsStore.fetchColors(search.value);
+const { data: categories } = useAsyncData("categories", async () => {
+  return await categoriesStore.fetchCategories(search.value);
 });
 
 watch(
   () => search.value,
   async () => {
-    await colorsStore.fetchColors(search.value);
-  },
-  { immediate: true }
+    await categoriesStore.fetchCategories(search.value);
+  }
 );
 
 onMounted(async () => {
   adminStore.setBreadcrumbs([
     { label: "Головна", url: "/admin" },
-    { label: "Кольори", url: "/admin/colors" },
+    { label: "Категорії", url: "/admin/categories" },
   ]);
 });
 
-const onEdit = (colorId: number) => {
+const onEdit = (categoryId: number) => {
   isOpen.value = true;
-  id.value = colorId;
+  id.value = categoryId;
 };
 
 const onDelete = async (id: number) => {
-  await colorsStore.deleteColor(id);
+  await categoriesStore.deleteCategory(id);
 };
 </script>
 

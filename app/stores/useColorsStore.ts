@@ -16,6 +16,7 @@ export const useColorsStore = defineStore("colors-store", () => {
     try {
       const response = await useGetAllColors(name);
       colors.value = response;
+      return response;
     } catch (error) {
       console.error(error);
     }

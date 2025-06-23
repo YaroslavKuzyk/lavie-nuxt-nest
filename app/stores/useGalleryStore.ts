@@ -26,6 +26,7 @@ export const useGalleryStore = defineStore("gallery-store", () => {
   const fetchGalleryImages = async () => {
     const response = await useGetAllImages(galleryParams.value);
     galleryImagesMeta.value = response;
+    return response;
   };
 
   const uploadImage = async (file: File) => {

@@ -3,7 +3,7 @@
     <CardHeader>
       <CardTitle>Галерея</CardTitle>
       <CardDescription>
-        <GalleryList class="w-full pt-4" />
+        <GalleryList class="w-full pt-4" type="default" />
       </CardDescription>
     </CardHeader>
   </Card>

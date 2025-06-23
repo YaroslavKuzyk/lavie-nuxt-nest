@@ -27,6 +27,10 @@ const data = {
       isActive: true,
       items: [
         {
+          title: "Категорії",
+          url: "/admin/categories",
+        },
+        {
           title: "Продукти",
           url: "/admin/products",
         },
@@ -45,6 +49,10 @@ const data = {
         {
           title: "Кольори",
           url: "/admin/colors",
+        },
+        {
+          title: "Розміри",
+          url: "/admin/sizes",
         },
       ],
     },

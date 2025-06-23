@@ -1,21 +1,21 @@
 <template>
   <Card>
     <CardHeader>
-      <CardTitle>Кольори</CardTitle>
+      <CardTitle>Розміри</CardTitle>
       <div>
         <div class="flex gap-4 items-center justify-between mt-3">
           <div class="w-1/3">
             <Input v-model="search" type="text" placeholder="Пошук по назві" />
           </div>
           <div>
-            <CreateColorDrawer>
+            <CreateSizeDrawer>
               <template #trigger>
                 <Button class="cursor-pointer">
                   <Plus />
-                  Додати колір
+                  Додати розмір
                 </Button>
               </template>
-            </CreateColorDrawer>
+            </CreateSizeDrawer>
           </div>
         </div>
       </div>
@@ -26,35 +26,27 @@
           <TableRow>
             <TableHead>ID</TableHead>
             <TableHead>Назва</TableHead>
-            <TableHead>Значення</TableHead>
             <TableHead>Створено</TableHead>
             <TableHead>Оновлено</TableHead>
             <TableHead class="text-right">Дії</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          <template v-if="colorsStore.colors.length">
-            <TableRow v-for="color in colorsStore.colors" :key="color.id">
-              <TableCell>{{ color.id }}</TableCell>
-              <TableCell>{{ color.name }}</TableCell>
-              <TableCell class="flex items-center gap-2">
-                <div
-                  class="w-6 h-6 rounded-full border border-gray-200"
-                  :style="{ backgroundColor: color.value }"
-                ></div>
-                <span class="text-sm">{{ color.value }}</span>
-              </TableCell>
+          <template v-if="sizesStore.sizes.length">
+            <TableRow v-for="size in sizesStore.sizes" :key="size.id">
+              <TableCell>{{ size.id }}</TableCell>
+              <TableCell>{{ size.name }}</TableCell>
               <TableCell>{{
-                $dayjs(color.createdAt).format("DD.MM.YYYY")
+                $dayjs(size.createdAt).format("DD.MM.YYYY")
               }}</TableCell>
               <TableCell>{{
-                $dayjs(color.updatedAt).format("DD.MM.YYYY")
+                $dayjs(size.updatedAt).format("DD.MM.YYYY")
               }}</TableCell>
               <TableCell class="text-right">
                 <Button
                   variant="ghost"
                   class="size-9 mr-2 cursor-pointer"
-                  @click="onEdit(color.id)"
+                  @click="onEdit(size.id)"
                 >
                   <Pencil />
                 </Button>
@@ -62,7 +54,7 @@
                 <Button
                   variant="ghost"
                   class="size-9 text-red-500 hover:text-red-500 cursor-pointer"
-                  @click="onDelete(color.id)"
+                  @click="onDelete(size.id)"
                 >
                   <Trash2 />
                 </Button>
@@ -80,7 +72,7 @@
       </Table>
     </CardContent>
 
-    <EditColorDrawer
+    <EditSizeDrawer
       :is-open="isOpen"
       :id="id ?? 0"
       @update:is-open="isOpen = $event"
@@ -100,57 +92,50 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import CreateColorDrawer from "~/components/admin/colors/drawers/CreateColorDrawer.vue";
-import EditColorDrawer from "~/components/admin/colors/drawers/EditColorDrawer.vue";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import CreateSizeDrawer from "~/components/admin/sizes/drawers/CreateSizeDrawer.vue";
+import EditSizeDrawer from "~/components/admin/sizes/drawers/EditSizeDrawer.vue";
 import { Input } from "@/components/ui/input";
 import { Pencil, Plus, Trash2 } from "lucide-vue-next";
 import { useAdminStore } from "~/stores/useAdminStore";
-import { useColorsStore } from "~/stores/useColorsStore";
+import { useSizesStore } from "~/stores/useSizesStore";
 
 definePageMeta({
   layout: "admin",
   middleware: ["auth", "admin"],
 });
 
-const colorsStore = useColorsStore();
+const sizesStore = useSizesStore();
 const adminStore = useAdminStore();
 const isOpen = ref(false);
 const id = ref<number | null>(null);
 const search = ref("");
 
-const { data: colors } = useAsyncData("colors", () => {
-  return colorsStore.fetchColors(search.value);
+const { data: sizes } = useAsyncData("sizes", async () => {
+  return await sizesStore.fetchSizes(search.value);
 });
 
 watch(
   () => search.value,
   async () => {
-    await colorsStore.fetchColors(search.value);
-  },
-  { immediate: true }
+    await sizesStore.fetchSizes(search.value);
+  }
 );
 
 onMounted(async () => {
   adminStore.setBreadcrumbs([
     { label: "Головна", url: "/admin" },
-    { label: "Кольори", url: "/admin/colors" },
+    { label: "Розміри", url: "/admin/sizes" },
   ]);
 });
 
-const onEdit = (colorId: number) => {
+const onEdit = (sizeId: number) => {
   isOpen.value = true;
-  id.value = colorId;
+  id.value = sizeId;
 };
 
 const onDelete = async (id: number) => {
-  await colorsStore.deleteColor(id);
+  await sizesStore.deleteSize(id);
 };
 </script>
 

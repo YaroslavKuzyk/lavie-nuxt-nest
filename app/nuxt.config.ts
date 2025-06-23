@@ -3,8 +3,8 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: "2025-05-15",
   ssr: true,
-  devtools: { enabled: true },
-  modules: ["@pinia/nuxt", "shadcn-nuxt", "dayjs-nuxt", "dayjs-nuxt"],
+  devtools: { enabled: false },
+  modules: ["@pinia/nuxt", "shadcn-nuxt", "dayjs-nuxt"],
   runtimeConfig: {
     public: {
       apiBase: "http://localhost:8000/api",

@@ -9,15 +9,6 @@
       </FormItem>
     </FormField>
 
-    <FormField v-slot="{ componentField }" name="value">
-      <FormItem>
-        <FormControl>
-          <Input type="text" placeholder="Значення" v-bind="componentField" />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    </FormField>
-
     <Button type="submit" class="cursor-pointer">Зберегти</Button>
   </form>
 </template>
@@ -36,11 +27,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 interface IProps {
-  initialValues: { name: string; value: string };
+  initialValues: { name: string };
 }
 
 interface IEmit {
-  (e: "submit", values: { name: string; value: string }): void;
+  (e: "submit", values: { name: string }): void;
 }
 
 const props = defineProps<IProps>();
@@ -50,7 +41,6 @@ const emit = defineEmits<IEmit>();
 const formSchema = toTypedSchema(
   z.object({
     name: z.string().min(1, "Назва є обов'язковою"),
-    value: z.string().min(1, "Значення є обов'язковим"),
   })
 );
 
@@ -60,7 +50,7 @@ const form = useForm({
 });
 
 const onSubmit = form.handleSubmit(async (values) => {
-  emit("submit", values);
+  emit("submit", values as { name: string });
 });
 </script>
 
