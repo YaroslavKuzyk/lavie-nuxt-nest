@@ -10,6 +10,7 @@ import { join } from 'path';
 import { ColorsModule } from './colors/colors.module';
 import { SizesModule } from './sizes/sizes.module';
 import { CategoriesModule } from './categories/categories.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { CategoriesModule } from './categories/categories.module';
     ColorsModule,
     SizesModule,
     CategoriesModule,
+    ProductsModule,
   ],
 })
 export class AppModule {}
